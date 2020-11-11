@@ -1,6 +1,9 @@
 #include <SPI.h>
 #include <RH_RF95.h>
 
+#define SF 7
+#define Freq 868.1
+
 // Singleton instance of the radio driver
 RH_RF95 rf95;
 
@@ -25,6 +28,10 @@ void loop()
       Serial.println((char*)buf);
       Serial.print("RSSI: ");
       Serial.println(rf95.lastRssi(), DEC);
+      Serial.print("SNR: ");
+      Serial.println(rf95.lastSNR(), DEC);
+      Serial.print("SF: ");
+      Serial.println(SF, DEC);
     }
   }
 }

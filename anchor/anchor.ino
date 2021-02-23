@@ -14,10 +14,11 @@ uint8_t data[] = "success";
 uint8_t token1[2] = "%";
 uint8_t token2[2] = ";";
 char *ptr;
-double freq = 860.0;
+double freq = 860.10;
+int counter = 0;
+unsigned long current_millis = millis();
 
 int changeFreq(char* buf) {
-  Serial.println(strlen(buf));
   return !strcmp(buf + (strlen(buf)-strlen(token1)), token1);
 }
 
@@ -28,11 +29,16 @@ void setup()
   if (!rf95.init())
     Serial.println("init failed");
   rf95.setFrequency(FREQ);
-  Serial.println(RH_RF95_MAX_MESSAGE_LEN);
 }
 
 void loop()
 {
+  if (millis() - current_millis > 10000) {
+    rf95.init();
+    rf95.setFrequency(860.00);
+    current_millis = millis();
+    delay(2000);
+  }
   if (rf95.available())
   {
     // Should be a message for us now   
@@ -44,8 +50,11 @@ void loop()
         freq = strtod(buf, &ptr);
         Serial.print("float value: ");
         Serial.println(freq);
+        rf95.setFrequency(freq); 
+        uint8_t message[] = "frequency changed";
+        rf95.send(message, sizeof(message));
       } else {
-        Serial.print("dist:");
+        Serial.print("message content:");
         Serial.println((char*)buf);
         Serial.print("RSSI:");
         Serial.println(rf95.lastRssi(), DEC);
@@ -56,6 +65,7 @@ void loop()
         rf95.send(data, sizeof(data));
         rf95.waitPacketSent();
       }
+      current_millis = millis();
     }
   }
 }

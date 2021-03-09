@@ -23,11 +23,7 @@ struct Config {
   float flong;
 };
 
-union Data {
-  uint8_t buf[sizeof(struct Config)];
-  Config con;
-} data;
-
+Config con;
 
 void setup() 
 {
@@ -42,55 +38,57 @@ void setup()
 }
 
 void loop()
-{if (rf95.available()) {
-  uint8_t len = sizeof(data.buf);
-
- if (rf95.recv(data.buf, &len)) {
-    Serial.println("CONFIG PACKET: ");
-    Serial.println(data.con.sf, DEC);
-    Serial.println(data.con.cr, DEC);
-    Serial.println(data.con.p, DEC);
-    Serial.println(data.con.freq, 1);
-    Serial.println(data.con.flat, 6);
-    Serial.println(data.con.flong, 6);
-//    rf95.init();
-    rf95.setSpreadingFactor(data.con.sf);
-    rf95.setCodingRate4(data.con.cr);
-    rf95.setFrequency(data.con.freq);
-    rf95.setTxPower(data.con.p);
-    smartdelay(3000);
-
-    current_millis = millis();
-    
-    uint8_t message[1]; 
-    len = sizeof(message);
-    while(millis() - current_millis < 10000) {
-      if (rf95.recv(message, &len)) {
-        current_millis = millis();
-        lastRssi = rf95.lastRssi();
-        lastSNR = rf95.lastSNR();
-        Serial.println(message[0]);
+{
+  if (rf95.available()) {
+  uint8_t len = sizeof(con);
+    if (rf95.recv((uint8_t*)&con, &len)) {
+      Serial.println("CONFIG PACKET: ");
+      Serial.println(con.sf, DEC);
+      Serial.println(con.cr, DEC);
+      Serial.println(con.p, DEC);
+      Serial.println(con.freq, 1);
+      Serial.println(con.flat, 6);
+      Serial.println(con.flong, 6);
+      rf95.setSpreadingFactor(con.sf);
+      rf95.setCodingRate4(con.cr);
+      rf95.setFrequency(con.freq);
+      rf95.setTxPower(con.p);
+      uint8_t mess[1] = {1}; 
+      rf95.send(mess, sizeof(mess));
+      rf95.waitPacketSent();
+      uint8_t message[1];
+      int sample_counter = 0;
+      current_millis = millis();
+      unsigned long start_sampling = millis();
+      while(millis() - current_millis < 2000) {
+        if (rf95.recv(message, &len)) {
+          current_millis = millis();
+          lastRssi = rf95.lastRssi();
+          lastSNR = rf95.lastSNR();
+          sample_counter += 1;
+        }
       }
+      unsigned long end_sampling = millis();
+      Serial.print(String(sample_counter)); Serial.println("/10 samples were collected");
+  //        Serial.print("RSSI:");
+  //        Serial.println(rf95.lastRssi(), 3);
+  //        Serial.print("SNR:");
+  //        Serial.println(rf95.lastSNR(), 3);
+  //        Serial.print("FREQ:");
+  //        Serial.println(freq, 3);
+  //        Serial.print("TxPower:");
+  //        Serial.println(p, DEC);
+  //        Serial.print("CR:");
+  //        Serial.println(cr, DEC);
+  //        Serial.print("SF:");
+  //        Serial.println(sf, DEC);   
     }
-//        Serial.print("RSSI:");
-//        Serial.println(rf95.lastRssi(), 3);
-//        Serial.print("SNR:");
-//        Serial.println(rf95.lastSNR(), 3);
-//        Serial.print("FREQ:");
-//        Serial.println(freq, 3);
-//        Serial.print("TxPower:");
-//        Serial.println(p, DEC);
-//        Serial.print("CR:");
-//        Serial.println(cr, DEC);
-//        Serial.print("SF:");
-//        Serial.println(sf, DEC);   
-//    rf95.init();
+    if (!rf95.init()) Serial.println("init failed");
     rf95.setFrequency(863.1);
     rf95.setSpreadingFactor(7);
     rf95.setCodingRate4(5);
-    rf95.setTxPower(18);   
+    rf95.setTxPower(18);  
   }
-}
 }
 
 static void smartdelay(unsigned long ms)

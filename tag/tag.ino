@@ -14,8 +14,6 @@ float latitude = 5.31;
 float longitude = 5.31;
 unsigned long age = 0;
 const uint8_t message[1] = {1};
-uint8_t buf[30];
-
 
 static void smartdelay(unsigned long ms);
 
@@ -28,17 +26,14 @@ struct Config {
   float flong;
 };
 
-union Data {
-  uint8_t buf[sizeof(struct Config)];
-  Config con;
-} data;
+Config con;
 
 void setup() 
 {
   Serial.begin(9600);
   while (!Serial);
   if (!rf95.init()) Serial.println("init failed");
-  rf95.setFrequency(default_freq);
+  rf95.setFrequency(863.1);
   rf95.setSpreadingFactor(7);
   rf95.setCodingRate4(5);
   rf95.setTxPower(18);
@@ -49,33 +44,30 @@ void loop()
 {
   for (uint8_t sf = 7; sf < 13; sf += 1) {
     for (uint8_t cr = 5; cr < 9; cr += 1) {
-      for (uint8_t p = 2; p < 21; p += 1) {
+      for (uint8_t p = 18; p < 19; p += 1) {
         for (float freq = 863.1; freq < 870; freq += 0.2) {
-          Serial.println("new config");
-//          rf95.init(); 
-          rf95.setFrequency(default_freq);
+          float current_time = millis();
+          rf95.setFrequency(863.1);
           rf95.setSpreadingFactor(7);
           rf95.setCodingRate4(5);
           rf95.setTxPower(18);
-          smartdelay(4000);
           while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {latitude = 5.31; longitude = 5.31;}//gps.f_get_position(&latitude, &longitude, &age);}
-
-          data.con = {sf, cr, p, freq, latitude, longitude};
-          rf95.send(data.buf, sizeof(data.buf));
+          con = {sf, cr, p, freq, latitude, longitude};
+          rf95.send((uint8_t*)&con, sizeof(con));
           rf95.waitPacketSent();
-//          rf95.init();
           rf95.setSpreadingFactor(sf);
           rf95.setCodingRate4(cr);
           rf95.setFrequency(freq);
           rf95.setTxPower(p);
-          smartdelay(5000);
-          Serial.println("send new data packet");
+          smartdelay(100);
+//          Serial.println("send samples");
           for (int i = 0; i < 10; i++) {
             rf95.send(message, sizeof(message));
             rf95.waitPacketSent();
           }
-          latitude = TinyGPS::GPS_INVALID_F_ANGLE; longitude = TinyGPS::GPS_INVALID_F_ANGLE; 
-          smartdelay(10000);
+          latitude = TinyGPS::GPS_INVALID_F_ANGLE; longitude = TinyGPS::GPS_INVALID_F_ANGLE;
+          smartdelay(2500);
+          Serial.print("one iteration took "); Serial.print(String((millis() - current_time)/1000.0)); Serial.println(" seconds");
         }
       }
     }

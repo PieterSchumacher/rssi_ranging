@@ -14,13 +14,12 @@ float latitude = 5.31;
 float longitude = 5.31;
 unsigned long age = 0;
 const uint8_t message[1] = {1};
+const float frequencies[7] = { 863.1, 863.3, 863.5, 865.1, 866.7, 868.3, 869.9 };
 
 static void smartdelay(unsigned long ms);
 
 struct Config {
   uint8_t sf;
-  uint8_t cr;
-  uint8_t p;
   float freq;
   float flat;
   float flong;
@@ -32,45 +31,35 @@ void setup()
 {
   Serial.begin(9600);
   while (!Serial);
-  if (!rf95.init()) Serial.println("init failed");
+  if (!rf95.init()) while(1);
   rf95.setFrequency(863.1);
   rf95.setSpreadingFactor(7);
-  rf95.setCodingRate4(5);
-  rf95.setTxPower(18);
+  rf95.setCodingRate4(4);
+  rf95.setTxPower(14);
   ss.begin(9600);
 }
 
 void loop()
 {
-  for (uint8_t sf = 7; sf < 13; sf += 1) {
-    for (uint8_t cr = 5; cr < 9; cr += 1) {
-      for (uint8_t p = 18; p < 19; p += 1) {
-        for (float freq = 863.1; freq < 870; freq += 0.2) {
-          float current_time = millis();
-          rf95.setFrequency(863.1);
-          rf95.setSpreadingFactor(7);
-          rf95.setCodingRate4(5);
-          rf95.setTxPower(18);
-          while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {latitude = 5.31; longitude = 5.31;}//gps.f_get_position(&latitude, &longitude, &age);}
-          con = {sf, cr, p, freq, latitude, longitude};
-          rf95.send((uint8_t*)&con, sizeof(con));
-          rf95.waitPacketSent();
-          rf95.setSpreadingFactor(sf);
-          rf95.setCodingRate4(cr);
-          rf95.setFrequency(freq);
-          rf95.setTxPower(p);
-          smartdelay(100);
-//          Serial.println("send samples");
-          for (int i = 0; i < 10; i++) {
-            rf95.send(message, sizeof(message));
-            rf95.waitPacketSent();
-          }
-          latitude = TinyGPS::GPS_INVALID_F_ANGLE; longitude = TinyGPS::GPS_INVALID_F_ANGLE;
-          smartdelay(2500);
-          Serial.print("one iteration took "); Serial.print(String((millis() - current_time)/1000.0)); Serial.println(" seconds");
+  for (uint8_t sf = 7; sf < 12; sf += 2) {
+      for (uint8_t i = 0; i < 7; i += 1) {
+        float current_time = millis();
+        rf95.setFrequency(863.1);
+        rf95.setSpreadingFactor(7);
+        while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {latitude = 5.31; longitude = 5.31}//gps.f_get_position(&latitude, &longitude, &age);}
+        con = {sf, frequencies[i], latitude, longitude};
+        rf95.send((uint8_t*)&con, sizeof(con));
+        rf95.waitPacketSent();
+        rf95.setSpreadingFactor(sf);
+        rf95.setFrequency(frequencies[i]);
+        smartdelay(200);
+        for (int i = 0; i < 100; i++) {
+          rf95.send(message, sizeof(message));
         }
+        latitude = TinyGPS::GPS_INVALID_F_ANGLE; longitude = TinyGPS::GPS_INVALID_F_ANGLE;
+        smartdelay(1400);
+        Serial.print("one iteration took "); Serial.print(String((millis() - current_time)/1000.0)); Serial.println(" seconds");
       }
-    }
   }
 }
 

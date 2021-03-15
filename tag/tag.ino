@@ -19,10 +19,10 @@ const float frequencies[7] = { 863.1, 863.3, 863.5, 865.1, 866.7, 868.3, 869.9 }
 static void smartdelay(unsigned long ms);
 
 struct Config {
-  uint8_t sf;
   float freq;
   float flat;
   float flong;
+  uint8_t sf;
 };
 
 Config con;
@@ -46,8 +46,8 @@ void loop()
         float current_time = millis();
         rf95.setFrequency(863.1);
         rf95.setSpreadingFactor(7);
-        while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {latitude = 5.31; longitude = 5.31}//gps.f_get_position(&latitude, &longitude, &age);}
-        con = {sf, frequencies[i], latitude, longitude};
+        while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {latitude = 5.31; longitude = 5.31;}//gps.f_get_position(&latitude, &longitude, &age);}
+        con = {frequencies[i], latitude, longitude, sf};
         rf95.send((uint8_t*)&con, sizeof(con));
         rf95.waitPacketSent();
         rf95.setSpreadingFactor(sf);
@@ -57,7 +57,7 @@ void loop()
           rf95.send(message, sizeof(message));
         }
         latitude = TinyGPS::GPS_INVALID_F_ANGLE; longitude = TinyGPS::GPS_INVALID_F_ANGLE;
-        smartdelay(1400);
+        smartdelay(2000);
         Serial.print("one iteration took "); Serial.print(String((millis() - current_time)/1000.0)); Serial.println(" seconds");
       }
   }

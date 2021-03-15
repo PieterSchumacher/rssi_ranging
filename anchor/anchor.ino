@@ -13,13 +13,25 @@ SoftwareSerial ss(4, 3);
 static void smartdelay(unsigned long ms);
 
 struct Config {
-  uint8_t sf;
   float freq;
+  float flat;
+  float flong;
+  uint8_t sf;
+};
+
+struct Location {
   float flat;
   float flong;
 };
 
+struct Data {
+  int16_t rssi;
+  int16_t snr;
+};
+
 Config con;
+Location loc;
+Data data;
 
 float flat = TinyGPS::GPS_INVALID_F_ANGLE;
 float flong = TinyGPS::GPS_INVALID_F_ANGLE;
@@ -34,8 +46,9 @@ void setup()
   rf95.setSpreadingFactor(7);
   rf95.setCodingRate4(4);
   rf95.setTxPower(14);  
-  while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {flat = 5.31; flong = 5.31;}//gps.f_get_position(&flat, &flong, &age);}
-  Serial.print("flat:"); Serial.println(String(flat)); Serial.print("flong:"); Serial.println(String(flong));
+  while(flat == TinyGPS::GPS_INVALID_F_ANGLE) {flat = 5.31; flong = 5.31; loc.flat = flat; loc.flong = flong;}//gps.f_get_position(&flat, &flong, &age);}
+  //delay(10000);
+  //Serial.print("flat:"); Serial.println(String(flat)); Serial.print("flong:"); Serial.println(String(flong));
 }
 
 void loop()
@@ -49,19 +62,17 @@ void loop()
       rf95.send(mess, sizeof(mess));
       rf95.waitPacketSent();
       uint8_t message[1];
-      Serial.write(con);
-//      int sample_counter = 0;
+      Serial.write((uint8_t*)&loc, sizeof(loc));
+      Serial.write((uint8_t*)&con, sizeof(con));
       current_millis = millis();
-//      unsigned long start_sampling = millis();
+      uint8_t l = sizeof(data);
       while(millis() - current_millis < 1200) {
         if (rf95.recv(message, &len)) {
-          Serial.write(rf95.lastRssi());
-          Serial.write(rf95.lastSNR());
-//          sample_counter += 1;
+          data = {rf95.lastRssi(), rf95.lastSNR()};
+          current_millis = millis();
+          Serial.write((uint8_t*)&data, l);
         }
       }
-//      unsigned long end_sampling = millis();
-//      Serial.print(String(sample_counter)); Serial.println("/100 samples were collected");
     }
     rf95.init();
     rf95.setFrequency(863.1);

@@ -41,12 +41,13 @@ void setup()
 
 void loop()
 {
-  for (uint8_t sf = 7; sf < 12; sf += 2) {
+  float start_loop = millis();
+  for (uint8_t sf = 7; sf < 12; sf += 1) {
       for (uint8_t i = 0; i < 7; i += 1) {
-        float current_time = millis();
         rf95.setFrequency(863.1);
         rf95.setSpreadingFactor(7);
-        while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {latitude = 5.31; longitude = 5.31;}//gps.f_get_position(&latitude, &longitude, &age);}
+        while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {gps.f_get_position(&latitude, &longitude, &age);}
+        Serial.println(String(latitude,6));
         con = {frequencies[i], latitude, longitude, sf};
         rf95.send((uint8_t*)&con, sizeof(con));
         rf95.waitPacketSent();
@@ -58,9 +59,10 @@ void loop()
         }
         latitude = TinyGPS::GPS_INVALID_F_ANGLE; longitude = TinyGPS::GPS_INVALID_F_ANGLE;
         smartdelay(2000);
-        Serial.print("one iteration took "); Serial.print(String((millis() - current_time)/1000.0)); Serial.println(" seconds");
+        
       }
   }
+  Serial.print("one iteration took "); Serial.print(String((millis() - start_loop)/1000.0)); Serial.println(" seconds");
 }
 
 

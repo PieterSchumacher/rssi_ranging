@@ -46,7 +46,7 @@ void setup()
   rf95.setSpreadingFactor(7);
   rf95.setCodingRate4(4);
   rf95.setTxPower(14);  
-  while(flat == TinyGPS::GPS_INVALID_F_ANGLE) {gps.f_get_position(&flat, &flong, &age); loc.flat = flat; loc.flong = flong;}
+  while(flat == TinyGPS::GPS_INVALID_F_ANGLE) {smartdelay(100);gps.f_get_position(&flat, &flong, &age); loc.flat = flat; loc.flong = flong;}
 }
 
 void loop()

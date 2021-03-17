@@ -41,18 +41,17 @@ void setup()
 {
   Serial.begin(9600);
   while (!Serial);
+  ss.begin(9600);
   if (!rf95.init()) while(1);
   rf95.setFrequency(863.1);
   rf95.setSpreadingFactor(7);
   rf95.setCodingRate4(4);
-  rf95.setTxPower(14);  
-  pinMode(9,OUTPUT);
-  while(flat == TinyGPS::GPS_INVALID_F_ANGLE) {smartdelay(100);gps.f_get_position(&flat, &flong, &age); loc.flat = flat; loc.flong = flong;}
-  digitalWrite(ledPin,HIGH);
+  rf95.setTxPower(14);   
+  while(flat == TinyGPS::GPS_INVALID_F_ANGLE) {smartdelay(100);gps.f_get_position(&flat, &flong, &age); loc.flat = flat; loc.flong = flong;} 
 }
 
 void loop()
-{
+{ 
   if (rf95.available()) {
   uint8_t len = sizeof(con);
     if (rf95.recv((uint8_t*)&con, &len)) {

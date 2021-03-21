@@ -55,30 +55,24 @@ void loop()
   if (rf95.available()) {
   uint8_t len = sizeof(con);
     if (rf95.recv((uint8_t*)&con, &len)) {
-      con.freq = round(con.freq * 10) / 10;
-      Serial.println(String(con.freq));
+      con.freq =  ((float )((int)(con.freq * 10))) / 10;
       rf95.setSpreadingFactor(con.sf);
       rf95.setFrequency(con.freq);
       uint8_t mess[1] = {1}; 
       rf95.send(mess, sizeof(mess));
       rf95.waitPacketSent();
       uint8_t message[1];
-      //Serial.write((uint8_t*)&loc, sizeof(loc));
-      //Serial.write((uint8_t*)&con, sizeof(con));
-      Serial.print("SF: "); Serial.println(String(con.sf));
-      Serial.print("freq: "); Serial.println(String(con.freq));
+      Serial.write((uint8_t*)&loc, sizeof(loc));
+      Serial.write((uint8_t*)&con, sizeof(con));
       current_millis = millis();
       uint8_t l = sizeof(data);
-      uint8_t packet_nr = 1;
       while(millis() - current_millis < 5000)  {
         if (rf95.recv(message, &len)) {
           data = {rf95.lastRssi(), rf95.lastSNR()};
           current_millis = millis();
-          //Serial.write((uint8_t*)&data, l);
-          packet_nr += 1;
+          Serial.write((uint8_t*)&data, l);
         }
       }
-      Serial.println(packet_nr);
     }
     rf95.init();
     rf95.setFrequency(863.1);

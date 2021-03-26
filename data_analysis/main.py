@@ -9,7 +9,7 @@ NB_SAMPLES = 10
 
 avg_rssi = "SELECT AVG(RSSI), T_FLAT, T_FLONG, A_FLAT, A_FLONG FROM exp4 GROUP BY T_FLAT, T_FLONG, A_FLAT, A_FLONG"
 
-db_label = "C:\\School\\rssi_ranging\\data_analysis\\rssi.db"
+db_label = "C:\\School\\rssi_ranging\\data_analysis\\rssi_3.db"
 conn = sqlite3.connect(db_label)
 conn.row_factory = lambda cursor, row: row
 c = conn.cursor()

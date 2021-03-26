@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d6b842e-13d6-4d0e-a442-5fc29c483876" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/data_analysis/rssi_1.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data_analysis/rssi_2.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data_analysis/rssi_3.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_analysis/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_analysis/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_analysis/rssi.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_analysis/rssi_2.db" beforeDir="false" afterPath="$PROJECT_DIR$/data_analysis/rssi_2.db" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,15 +12,15 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/rssi_ranging$main.coverage" NAME="main Coverage Results" MODIFIED="1616757711636" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_analysis" />
+    <SUITE FILE_PATH="coverage/rssi_ranging$main.coverage" NAME="main Coverage Results" MODIFIED="1616772848844" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_analysis" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data_analysis/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="662">
-              <caret line="70" column="16" lean-forward="true" selection-start-line="70" selection-start-column="16" selection-end-line="70" selection-end-column="16" />
+            <state relative-caret-position="425">
+              <caret line="25" column="48" lean-forward="true" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -200,15 +196,16 @@
       <workItem from="1616587090783" duration="235000" />
       <workItem from="1616679976793" duration="4178000" />
       <workItem from="1616707161120" duration="597000" />
-      <workItem from="1616752211140" duration="7833000" />
+      <workItem from="1616752211140" duration="10657000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14075000" />
+    <option name="totallyTimeSpent" value="16899000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="2560" height="1440" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10254372" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -295,8 +292,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/data_analysis/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="662">
-          <caret line="70" column="16" lean-forward="true" selection-start-line="70" selection-start-column="16" selection-end-line="70" selection-end-column="16" />
+        <state relative-caret-position="425">
+          <caret line="25" column="48" lean-forward="true" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

@@ -44,7 +44,7 @@ void setup()
   ss.begin(9600);
   if (!rf95.init()) while(1);
   rf95.setFrequency(863.1);
-  rf95.setSpreadingFactor(10);
+  rf95.setSpreadingFactor(12);
   rf95.setCodingRate4(4);
   rf95.setTxPower(14);   
   while(flat == TinyGPS::GPS_INVALID_F_ANGLE) {smartdelay(100);gps.f_get_position(&flat, &flong, &age); loc.flat = flat; loc.flong = flong;} 
@@ -76,7 +76,7 @@ void loop()
     }
     rf95.init();
     rf95.setFrequency(863.1);
-    rf95.setSpreadingFactor(10);
+    rf95.setSpreadingFactor(12);
     rf95.setCodingRate4(4);
     rf95.setTxPower(14);  
     delay(1);

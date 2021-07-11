@@ -1,99 +1,70 @@
 import sqlite3
 import matplotlib.pyplot as plt
-import random
-import numpy as np
 import haversine as hs
 import pandas as pd
+import numpy as np
+from math import sqrt, pow
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+from mpl_toolkits.mplot3d import axes3d
 
-NB_SAMPLES = 10
+def f(x):
+    t_flat, t_flong, a_flat, a_flong = x[0], x[1], x[2], x[3]
+    return sqrt(pow(12.36,2) + pow(hs.haversine((t_flat, t_flong), (a_flat, a_flong), unit=hs.Unit.METERS),2))
 
-avg_rssi = "SELECT AVG(RSSI), T_FLAT, T_FLONG, A_FLAT, A_FLONG FROM exp4 GROUP BY T_FLAT, T_FLONG, A_FLAT, A_FLONG"
-
-db_label = "C:\\School\\rssi_ranging\\data_analysis\\rssi_3.db"
-conn = sqlite3.connect(db_label)
-conn.row_factory = lambda cursor, row: row
-c = conn.cursor()
-# dist = np.array([hs.haversine((t_flat, t_flong), (a_flat, a_flong), unit=hs.Unit.METERS) for t_flat, t_flong, a_flat, a_flong in c.execute('SELECT DISTINCT T_FLAT, T_FLONG, A_FLAT, A_FLONG FROM exp4').fetchall()])
-# dist.sort()
-# print(len(dist))
-# print(pd.read_sql_query(avg_rssi, conn))
+def g(df):
+    df['distance'] = df.iloc[:, 2:6].apply(f, axis=1)
+    return df.drop(columns=['T_FLAT', 'T_FLONG', 'A_FLAT', 'A_FLONG'])
 
 
-rssi = sorted([(rssi, hs.haversine((t_flat, t_flong), (a_flat, a_flong), unit=hs.Unit.METERS)) for rssi, t_flat, t_flong, a_flat, a_flong in c.execute(avg_rssi).fetchall()], key=lambda row: row[1])
-# print(np.sort(rssi, axis=0))
-print(rssi)
-# val = 0.  # this is the value where you want the data to appear on the y-axis.
-# plt.plot(dist, np.zeros_like(dist) + val, ',')
-# plt.show()
+conn = sqlite3.connect("C:\\School\\rssi_ranging\\data_analysis\\rssi_1.db")
+rssi_1_exp4 = g(pd.read_sql("SELECT * from exp4", conn))
+rssi_1_exp5 = g(pd.read_sql("SELECT * FROM exp5", conn))
+rssi_1_exp6 = g(pd.read_sql("SELECT * FROM exp6", conn))
 
-# for i in range(len(dist)):
-#     print(i)
-#     print((i)*NB_SAMPLES, ':', (i+1)*NB_SAMPLES)
-#     print(rssi[(i)*NB_SAMPLES:(i+1)*NB_SAMPLES])
-# for i in range(len(dist)):
-#     d[i*NB_SAMPLES:(i+1)*NB_SAMPLES] = dist[i]
-#     rssi[i*NB_SAMPLES:(i+1)*NB_SAMPLES] = np.array(random.sample(c.execute('SELECT RSSI FROM exp4 WHERE dist= ?', (dist[i],)).fetchall(), NB_SAMPLES))
-# print(d)
-# print(rssi)
-#
-# plt.scatter(d, rssi)
-# plt.title("Raw RSSI values")
-# plt.ylabel("RSSI (dBm)")
-# plt.xlabel("Distance (m)")
-# plt.show()
-#
-# # MIN-MAX
-# d = np.zeros(len(dist)*2)
-# rssi = np.zeros(len(dist)*2)
-# for i in range(len(dist)):
-#     d[i*2:(i+1)*2] = dist[i]
-#     arr = np.array(c.execute('SELECT RSSI FROM exp4 WHERE dist= ?', (dist[i],)).fetchall())
-#     rssi[i*2:(i+1)*2] = np.array([np.amin(arr), np.amax(arr)])
-# plt.scatter(d, rssi)
-# plt.title("Min-max RSSI values")
-# plt.ylabel("RSSI (dBm)")
-# plt.xlabel("Distance (m)")
-# plt.show()
 
-# AVERAGE
-# d = np.zeros(len(dist))
-# rssi = np.zeros(len(dist))
-# for i in range(len(dist)):
-#     rssi[i] = np.average(np.array(c.execute('SELECT RSSI FROM exp4 WHERE dist= ?', (dist[i],)).fetchall()))
-plt.title("Average RSSI values")
-plt.ylabel("RSSI (dBm)")
-plt.xlabel("Distance (m)")
-rssi, d = zip(*rssi)
-plt.scatter(d, rssi, marker=".")
-popt = np.polyfit(d, rssi, 2)
-xn = np.linspace(min(d), max(d), len(d))
-yn = np.polyval(popt, xn)
-plt.plot(xn, yn)
-# plt.semilogx()
+conn = sqlite3.connect("C:\\School\\rssi_ranging\\data_analysis\\rssi_2.db")
+rssi_2_exp4 = g(pd.read_sql("SELECT * from exp4", conn))
+rssi_2_exp6 = g(pd.read_sql("SELECT * FROM exp6", conn))
+
+
+conn = sqlite3.connect("C:\\School\\rssi_ranging\\data_analysis\\rssi_3.db")
+rssi_3_exp4 = g(pd.read_sql("SELECT * from exp4", conn))
+rssi_3_exp6 = g(pd.read_sql("SELECT * FROM exp6", conn))
+
+conn = sqlite3.connect("C:\\School\\rssi_ranging\\data_analysis\\other_rssi.db")
+rssi_1_exp3 = pd.read_sql("SELECT * from exp3", conn)
+rssi_1_exp3['distance'] = rssi_1_exp3.iloc[:, 1]
+rssi_1_exp3 = rssi_1_exp3.drop(columns=['FLAT', 'FLONG', 'Dist', 'ID'])
+
+df = pd.concat([
+    rssi_1_exp4,
+    rssi_1_exp5,
+    rssi_1_exp6,
+    rssi_2_exp4,
+    rssi_2_exp6,
+    rssi_3_exp4,
+    rssi_3_exp6]).sort_values(by=['distance'], ignore_index=True)
+
+d = df.where(df['SF'] != 12).groupby(['FREQ', 'SF'])['RSSI'].std()
+d.columns = ['FREQ', 'SF', 'RSSI']
+d = d.reset_index()
+
+x = d['SF']
+y = d['FREQ']
+z = d['RSSI']
+#X, Y, Z = axes3d.get_test_data(0.1)
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(x, y, z, c='b', marker='.')
+ax.set_xlabel("SF")
+ax.set_ylabel("FREQ")
+ax.set_zlabel("Standard deviation RSSI (dBm)")
+# ax.plot_wireframe(x, y, z, rstride=5, cstride=5)
+# for angle in range(0, 360, 60):
+ax.view_init(30, 360)
+plt.draw()
+plt.pause(.001)
 plt.show()
 
-# # SNR AVERAGE
-# d = np.zeros(len(dist))
-# rssi = np.zeros(len(dist))
-# for i in range(len(dist)):
-#     d[i] = dist[i]
-#     rssi[i] = np.average(np.array(c.execute('SELECT SNR FROM exp4 WHERE dist= ?', (dist[i],)).fetchall()))
-# plt.scatter(d, rssi)
-# plt.title("Average SNR values")
-# plt.ylabel("SNR (dBm)")
-# plt.xlabel("Distance (m)")
-# plt.show()
-#
-# # SNR MINMAX
-#
-# d = np.zeros(len(dist)*2)
-# rssi = np.zeros(len(dist)*2)
-# for i in range(len(dist)):
-#     d[i*2:(i+1)*2] = dist[i]
-#     arr = np.array(c.execute('SELECT SNR FROM exp4 WHERE dist= ?', (dist[i],)).fetchall())
-#     rssi[i*2:(i+1)*2] = np.array([np.amin(arr), np.amax(arr)])
-# plt.scatter(d, rssi)
-# plt.title("Raw RSSI values")
-# plt.ylabel("SNR")
-# plt.xlabel("Distance (m)")
-# plt.show()
+

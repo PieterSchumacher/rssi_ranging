@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d6b842e-13d6-4d0e-a442-5fc29c483876" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/data_analysis/splines.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_analysis/data_analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_analysis/data_analysis.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_analysis/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_analysis/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_analysis/rssi_2.db" beforeDir="false" afterPath="$PROJECT_DIR$/data_analysis/rssi_2.db" afterDir="false" />
     </list>
@@ -12,17 +15,29 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/rssi_ranging$main.coverage" NAME="main Coverage Results" MODIFIED="1616772848844" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_analysis" />
+    <SUITE FILE_PATH="coverage/rssi_ranging$main.coverage" NAME="main Coverage Results" MODIFIED="1619448525915" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_analysis" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data_analysis/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="25" column="48" lean-forward="true" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
+            <state relative-caret-position="422">
+              <caret line="47" selection-start-line="47" selection-end-line="47" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/data_analysis/splines.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="813">
+              <caret line="138" column="20" lean-forward="true" selection-end-line="138" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -44,15 +59,16 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/data_analysis/main.py" />
+        <option value="$PROJECT_DIR$/data_analysis/splines.py" />
       </list>
     </option>
   </component>
   <component name="JupyterTrust" id="92067d2d-3911-44c4-886b-26c314a314fe" />
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="2576" />
-    <option name="height" value="1456" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-1928" />
+    <option name="y" value="129" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectId" id="1l3dV10YsQQJIRX4X2c7m9ls9k3" />
   <component name="ProjectView">
@@ -60,7 +76,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -92,6 +107,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -196,23 +212,28 @@
       <workItem from="1616587090783" duration="235000" />
       <workItem from="1616679976793" duration="4178000" />
       <workItem from="1616707161120" duration="597000" />
-      <workItem from="1616752211140" duration="10657000" />
+      <workItem from="1616752211140" duration="10732000" />
+      <workItem from="1617210100400" duration="1109000" />
+      <workItem from="1617213433243" duration="742000" />
+      <workItem from="1617293677142" duration="943000" />
+      <workItem from="1619447531459" duration="2665000" />
+      <workItem from="1619552061681" duration="771000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16899000" />
+    <option name="totallyTimeSpent" value="23204000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="2560" height="1440" extended-state="6" />
+    <frame x="-1928" y="154" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10254372" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1444563" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32967836" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.25950292" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.25856698" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -222,11 +243,11 @@
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="11" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32894737" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.3281412" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="SciView" order="3" sideWeight="0.4961307" visible="true" weight="0.29848966" />
+      <window_info anchor="right" id="SciView" order="3" sideWeight="0.4961307" visible="true" weight="0.26066098" />
       <window_info anchor="right" x="0" y="0" width="594" height="1256" id="Documentation" order="4" sideWeight="0.5038693" side_tool="true" weight="0.29848966" />
       <window_info anchor="right" id="Database" order="5" />
     </layout>
@@ -292,10 +313,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/data_analysis/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="48" lean-forward="true" selection-start-line="25" selection-start-column="48" selection-end-line="25" selection-end-column="48" />
+        <state relative-caret-position="422">
+          <caret line="47" selection-start-line="47" selection-end-line="47" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_analysis/splines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="813">
+          <caret line="138" column="20" lean-forward="true" selection-end-line="138" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>

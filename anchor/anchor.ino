@@ -35,6 +35,8 @@ Data data;
 
 float flat = TinyGPS::GPS_INVALID_F_ANGLE;
 float flong = TinyGPS::GPS_INVALID_F_ANGLE;
+//float flat = 1.1;
+//float flong = 1.1;
 unsigned long age = 0;
 
 void setup() 
@@ -46,12 +48,16 @@ void setup()
   rf95.setFrequency(863.1);
   rf95.setSpreadingFactor(12);
   rf95.setCodingRate4(4);
-  rf95.setTxPower(14);   
+  rf95.setTxPower(20);   
+  uint8_t mess[1] = {1}; 
+  rf95.send(mess, sizeof(mess));
+  rf95.waitPacketSent();
   while(flat == TinyGPS::GPS_INVALID_F_ANGLE) {smartdelay(100);gps.f_get_position(&flat, &flong, &age); loc.flat = flat; loc.flong = flong;} 
 }
 
 void loop()
 { 
+//  Serial.write("Hi");
   if (rf95.available()) {
   uint8_t len = sizeof(con);
     if (rf95.recv((uint8_t*)&con, &len)) {
@@ -78,7 +84,7 @@ void loop()
     rf95.setFrequency(863.1);
     rf95.setSpreadingFactor(12);
     rf95.setCodingRate4(4);
-    rf95.setTxPower(14);  
+    rf95.setTxPower(20);  
     delay(1);
   }
 }

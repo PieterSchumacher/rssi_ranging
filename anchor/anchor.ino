@@ -76,7 +76,6 @@ void loop()
       while(millis() - current_millis < 5000)  {
         if (rf95.recv(message, &len)) {
           packet_id = message[0];
-          Serial.print(packet_id);
           data = {rf95.lastRssi(), packet_id};
           current_millis = millis();
           Serial.write((uint8_t*)&data, l);

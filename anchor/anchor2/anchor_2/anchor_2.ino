@@ -7,7 +7,7 @@
 RH_RF95 rf95;
 unsigned long current_millis = millis();
 unsigned long lively_millis = millis();
-uint8_t lively_message = {1};
+uint8_t lively_message = {2};
 
 TinyGPS gps;
 SoftwareSerial ss(4, 3);
@@ -90,6 +90,7 @@ void loop()
     rf95.setCodingRate4(4);
     rf95.setTxPower(20);  
     delay(1);
+    delay(200);
     lively_millis = millis();
   }
 

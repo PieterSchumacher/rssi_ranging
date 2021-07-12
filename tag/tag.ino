@@ -15,6 +15,7 @@ float longitude = TinyGPS::GPS_INVALID_F_ANGLE;
 unsigned long age = 0;
 const uint8_t message[1] = {1};
 const float frequencies[7] = { 863.1 };
+uint8_t recv_message[2];
 
 static void smartdelay(unsigned long ms);
 
@@ -41,8 +42,16 @@ void setup()
 
 void loop()
 {
+  while (!Serial.available()) {
+    if (rf95.available()) {
+      uint8_t len = sizeof(recv_message);
+      if (rf95.recv(recv_message, &len)) {
+        Serial.println(recv_message[0]);
+      }
+    }
+  }
   float start_loop = millis();
-  for (uint8_t sf = 7; sf < 12; sf += 1) {
+  for (uint8_t sf = 7; sf < 8; sf += 1) {
         rf95.setFrequency(863.1);
         rf95.setSpreadingFactor(12);
         while(latitude == TinyGPS::GPS_INVALID_F_ANGLE) {smartdelay(100);gps.f_get_position(&latitude, &longitude, &age);}
@@ -62,6 +71,8 @@ void loop()
         smartdelay(7000);
   }
   Serial.print("one iteration took "); Serial.print(String((millis() - start_loop)/1000.0)); Serial.println(" seconds");
+  Serial.flush();
+  smartdelay(1000);
 }
 
 

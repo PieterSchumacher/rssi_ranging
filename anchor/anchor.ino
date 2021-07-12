@@ -34,10 +34,10 @@ Location loc;
 Data data;
 int16_t packet_id;
 
-//float flat = TinyGPS::GPS_INVALID_F_ANGLE;
-//float flong = TinyGPS::GPS_INVALID_F_ANGLE;
-float flat = 1.1;
-float flong = 1.1;
+float flat = TinyGPS::GPS_INVALID_F_ANGLE;
+float flong = TinyGPS::GPS_INVALID_F_ANGLE;
+//float flat = 1.1;
+//float flong = 1.1;
 unsigned long age = 0;
 
 void setup() 

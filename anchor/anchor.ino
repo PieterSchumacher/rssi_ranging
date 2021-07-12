@@ -34,10 +34,10 @@ Location loc;
 Data data;
 int16_t packet_id;
 
-float flat = TinyGPS::GPS_INVALID_F_ANGLE;
-float flong = TinyGPS::GPS_INVALID_F_ANGLE;
-//float flat = 1.1;
-//float flong = 1.1;
+//float flat = TinyGPS::GPS_INVALID_F_ANGLE;
+//float flong = TinyGPS::GPS_INVALID_F_ANGLE;
+float flat = 1.1;
+float flong = 1.1;
 unsigned long age = 0;
 
 void setup() 
@@ -76,6 +76,7 @@ void loop()
       while(millis() - current_millis < 5000)  {
         if (rf95.recv(message, &len)) {
           packet_id = message[0];
+          Serial.print(packet_id);
           data = {rf95.lastRssi(), packet_id};
           current_millis = millis();
           Serial.write((uint8_t*)&data, l);

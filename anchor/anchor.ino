@@ -6,8 +6,6 @@
 // Singleton instance of the radio driver
 RH_RF95 rf95;
 unsigned long current_millis = millis();
-unsigned long lively_millis = millis();
-uint8_t lively_message = {1};
 
 TinyGPS gps;
 SoftwareSerial ss(4, 3);
@@ -77,7 +75,7 @@ void loop()
       uint8_t l = sizeof(data);
       while(millis() - current_millis < 5000)  {
         if (rf95.recv(message, &len)) {
-          packet_id += 1;
+          packet_id = message[0];
           data = {rf95.lastRssi(), packet_id};
           current_millis = millis();
           Serial.write((uint8_t*)&data, l);
@@ -90,12 +88,6 @@ void loop()
     rf95.setCodingRate4(4);
     rf95.setTxPower(20);  
     delay(1);
-    lively_millis = millis();
-  }
-
-  if (millis() - lively_millis > 30000) {
-    rf95.send(&lively_message, sizeof(lively_message));
-    lively_millis = millis();
   }
 }
 
